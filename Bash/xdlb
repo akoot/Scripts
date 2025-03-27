@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Download video/audio from twitter posts
+# Saves both video and audio to a (valid) extension, default=ogg
+# Copy from the address bar to store the username, otherwise it will be "i"
+# Requires ../cookies.txt
+
+url="$1"
+extension="${2:-"ogg"}"
+
+# Use a while loop to extract the <username> and <post id> from the URL
+IFS='/' read -r _ a b c d e _ <<< "$url"
+file="$c [$e]"
+
+# Use yt-dlp to download the audio
+yt-dlp -k --cookies "$(dirname "$0")/../cookies.txt" $url -o "$file"
+
+# Find the target file with pattern "$file.xxxx-Audio.mp4"
+target_file=$(ls "$file".*-Audio.mp4 2>/dev/null | head -n 1)
+
+if [[ -n "$target_file" ]]; then
+    # Convert to $extension
+    output_file="$file.$extension"
+    ffmpeg -i "$target_file" -c:a libvorbis -q:a 5 "$output_file"
+    rm "$target_file"
+
+    # Delete other files matching "$file.xxxx.mp4" but NOT "$file.mp4!"
+    for other_file in "$file".*.mp4; do
+        [[ "$other_file" != "$target_file" && "$other_file" != "$file.mp4" ]] && rm "$other_file"
+    done
+else
+    echo "No matching file found."
+fi

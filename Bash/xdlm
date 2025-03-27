@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Download multiple audio files from a twitter post
+# Requires ../cookies.txt
+
+# Arguments
+url="$1"
+format="${2:-"vorbis"}"
+
+# Use yt-dlp to download the audio
+yt-dlp --cookies "$(dirname "$0")/../cookies.txt" $url -x --audio-format="$format"

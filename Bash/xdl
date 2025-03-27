@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Download audio from twitter posts
+# Saves them as an ogg file named "Username [postId].ogg"
+# Copy from the address bar to store the username, otherwise it will be "i"
+# Requires ../cookies.txt
+
+# Arguments
+url="$1"
+format="${2:-"vorbis"}"
+
+# Use a while loop to extract the <username> and <post id> from the URL
+IFS='/' read -r _ a b c d e _ <<< "$url"
+file="$c [$e]" # Example: Akoot_ [xxxx].ogg
+
+# Use yt-dlp to download the audio
+yt-dlp --cookies "$(dirname "$0")/../cookies.txt" $url -x --audio-format="$format" -o "$file"

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Say you have a bunch of zip files or something.
+# Sometimes they have 1 folder, sometimes they don't.
+# Don't take a chance! Before you unzip, contain them right away!
+
+for f in "$1" ; mv "$1/$f" . ; rm -rf "$1" ;

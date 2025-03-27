@@ -1,0 +1,2 @@
+# Download your cookies for yt-dlp using https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/ or https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc
+# Replace this file!
